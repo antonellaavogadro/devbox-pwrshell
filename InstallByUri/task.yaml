@@ -1,0 +1,7 @@
+name: install-by-uri
+command: "./install-by-uri.ps1 -Uri parameters('uri')"
+inputs:
+  uri:
+    type: string
+    defaultValue: ""    
+    required: true

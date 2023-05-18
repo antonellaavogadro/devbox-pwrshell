@@ -1,0 +1,7 @@
+name: powershell
+command: "./Powershell.ps1 -powershellInput parameters('powershellInput')"
+inputs:
+  powershellInput:
+    type: literal
+    required: true
+
