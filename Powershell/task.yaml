@@ -1,7 +1,7 @@
 name: powershell
-command: "./Powershell.ps1 -powershellInput parameters('powershellInput')"
+command: "{{script}}"
 inputs:
-  powershellInput:
-    type: literal
+  script:
+    type: string
+    defaultValue: ""    
     required: true
-
