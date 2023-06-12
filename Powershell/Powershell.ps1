@@ -1,6 +1,6 @@
 param(
      [Parameter()]
-     [string]$Run-Powershell
+     [string]$Script
  )
 
- $Run-Powershell
+ $Script
