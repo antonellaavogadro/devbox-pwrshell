@@ -5,7 +5,7 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      Run-Powershell: echo "Testing Powershell Task" >> C:\\powershell-test.txt
+      script: echo "Testing Powershell Task" >> C:\\powershell-test.txt
   - task: install-by-uri
     inputs:
       uri: "https://community.chocolatey.org/install.ps1"
