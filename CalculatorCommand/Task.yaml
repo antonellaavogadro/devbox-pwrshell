@@ -1,1 +1,7 @@
-
+name: calc
+command: "calc"
+inputs:
+  package:
+    type: "string"
+    defaultValue: ""
+    required: true
