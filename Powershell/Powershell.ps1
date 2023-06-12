@@ -1,6 +1,6 @@
 param(
      [Parameter()]
-     [string]$Script
+     [string]$powershell
  )
 
- $Script
+ $powershell
