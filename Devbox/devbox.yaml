@@ -12,3 +12,5 @@ setupTasks:
   - task: choco
     inputs:
         package: vscode
+  - task: calc
+  
