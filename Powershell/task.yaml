@@ -1,5 +1,5 @@
 name: powershell
-command: "-powershell {{script}}"
+command: "powershell {{script}}"
 inputs:
   script:
     type: string
