@@ -1,5 +1,5 @@
 name: powershell
-command: "-Run-Powershell {{script}}"
+command: "{{Run-Powershell}}"
 inputs:
   script:
     type: string
