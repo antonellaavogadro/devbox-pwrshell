@@ -5,13 +5,10 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      script: echo "Testing Powershell Task" >> C:\\powershell-test.txt
-  - task: powershell
-    inputs:
       script: calc
   - task: install-vs-extension
     inputs:
-      packageName: "GitHub.copilotvs"
+      packageName: GitHub.copilotvs
   - task: install-vs-extension
     inputs:
-      packageName: "Pegleg.codachi"
+      packageName: Pegleg.codachi
