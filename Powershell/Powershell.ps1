@@ -1,6 +1,6 @@
 param(
      [Parameter()]
-     [string]$powershellInput
+     [string]$powershell
  )
 
- $powershellInput
+ $powershell

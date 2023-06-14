@@ -8,16 +8,4 @@ setupTasks:
       script: echo "Testing Powershell Task" >> C:\\powershell-test.txt
   - task: powershell
     inputs:
-      script: calc
-  - task: install-by-uri
-    inputs:
-      uri: "https://community.chocolatey.org/install.ps1"
-  - task: choco
-    inputs:
-        package: vscode
-  - task: install-vs-extension
-    inputs:
-      packageName: "GitHub.copilotvs"
-  - task: install-vs-extension
-    inputs:
-      packageName: "Pegleg.codachi"
+      powershellInput: 'calc'

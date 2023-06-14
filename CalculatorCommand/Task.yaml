@@ -1,5 +1,5 @@
-name: choco
-command: "./choco.ps1 -Package {{package}}"
+name: calc
+command: "calc"
 inputs:
   package:
     type: "string"

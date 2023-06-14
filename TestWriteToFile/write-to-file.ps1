@@ -1,1 +1,1 @@
-echo "Testing powershell Customization" >> C:\\testing-pwrsh.txt
+echo "Testing powershell Customization" >> C:\Users\testing-pwrsh.txt
