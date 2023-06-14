@@ -9,12 +9,6 @@ setupTasks:
   - task: powershell
     inputs:
       script: calc
-  - task: install-by-uri
-    inputs:
-      uri: "https://community.chocolatey.org/install.ps1"
-  - task: choco
-    inputs:
-        package: vscode
   - task: install-vs-extension
     inputs:
       packageName: "GitHub.copilotvs"
