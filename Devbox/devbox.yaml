@@ -1,9 +1,23 @@
-name: sample
+name: powershell-customization-test
 image: microsoftwindowsdesktop_windows-ent-cpc_win11-22h2-ent-cpc-m365@1.0.0
 hostInformation: general_a_8c32gb256ssd_v1
 supportsHibernation: false
 setupTasks:
-  - task: write-to-file 
-  - task: powershell 
+  - task: powershell
     inputs:
-      powershellInput: 'calc'
+      script: echo "Testing Powershell Task" >> C:\\powershell-test.txt
+  - task: powershell
+    inputs:
+      script: calc
+  - task: install-by-uri
+    inputs:
+      uri: "https://community.chocolatey.org/install.ps1"
+  - task: choco
+    inputs:
+        package: vscode
+  - task: install-vs-extension
+    inputs:
+      packageName: "GitHub.copilotvs"
+  - task: install-vs-extension
+    inputs:
+      packageName: "Pegleg.codachi"
