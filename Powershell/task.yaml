@@ -1,6 +1,7 @@
 name: powershell
-command: "powershell {{script}}"
+command: ".\\runcommand.ps1 {{command}}"
 inputs:
-  script:
-    type: literal
+  command:
+    type: string
+    defaultValue: ""    
     required: true
