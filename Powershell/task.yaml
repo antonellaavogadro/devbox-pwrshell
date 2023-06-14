@@ -1,5 +1,5 @@
 name: powershell
-command: "./Powershell.ps1 powershell {{script}}"
+command: "powershell {{script}}"
 inputs:
   script:
     type: literal
