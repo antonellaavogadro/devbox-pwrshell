@@ -5,7 +5,7 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      script: calc
+      command: calc
   # - task: install-vs-extension
   #   inputs:
   #     packageName: GitHub.copilotvs
