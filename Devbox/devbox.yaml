@@ -6,9 +6,9 @@ setupTasks:
   - task: powershell
     inputs:
       command: calc
-  # - task: install-vs-extension
-  #   inputs:
-  #     packageName: GitHub.copilotvs
-  # - task: install-vs-extension
-  #   inputs:
-  #     packageName: Pegleg.codachi
+  - task: install-vs-extension
+    inputs:
+      packageName: GitHub.copilotvs
+  - task: install-vs-extension
+    inputs:
+      packageName: Pegleg.codachi
