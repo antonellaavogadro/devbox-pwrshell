@@ -1,10 +1,8 @@
 <#
 .SYNOPSIS
     Install an extension defined by the given item name to the latest Visual Studio instance
-
 .PARAMETER MarketplaceItemName 
     Markplace Item Name (as used in the URI of a given Visual Studio Extension Maketplace entry)
-
 #>
 param (
         [Parameter(Mandatory)]
@@ -14,7 +12,6 @@ param (
 <#
 .SYNOPSIS
     Download an extension defined by the given item name
-
 .PARAMETER MarketplaceItemName 
     Markplace Item Name (as used in the URI of a given Visual Studio Extension Maketplace entry)
 #>
@@ -46,6 +43,7 @@ function Get-VSIXFromMarketplace
         Headers = @{"Accept" = 'application/json;api-version=3.2-preview.1'}
         ContentType = "application/json"
         Body = $marketplaceQueryBody
+        UseBasicParsing = $true
     }
 
     $jsonResponse = (Invoke-WebRequest @requestParams).Content | ConvertFrom-Json 
@@ -66,7 +64,7 @@ function Get-VSIXFromMarketplace
 
     Write-Host "Downloading $($extensions.displayName)"
 
-    Invoke-WebRequest $cdnUrl -OutFile $downloadFilePath
+    Invoke-WebRequest $cdnUrl -UseBasicParsing -OutFile $downloadFilePath
 
     # Turn progress back on
     $ProgressPreference = 'Continue'
@@ -77,14 +75,11 @@ function Get-VSIXFromMarketplace
 <#
 .SYNOPSIS
     Invokes Visual Studio Locator, if it exists, with the provided arguments.
-
 .DESCRIPTION
     Invokes Visual Studio Locator (vswhere.exe) with the provided arguments.
     If this script is run without the locator present, it will fail.
-
 .PARAMETER Arguments
     Arguments to pass onwards to Visual Studio Locator.
-
 .LINK
     https://learn.microsoft.com/en-us/visualstudio/install/tools-for-managing-visual-studio-instances#using-vswhereexe
 #>
@@ -125,11 +120,9 @@ function Assert-VsWherePresent
 <#
 .SYNOPSIS
     Invokes VSIX Installer, if it exists, with the provided arguments.
-
 .DESCRIPTION
     Invokes VSIX Installer with the provided arguments.
     If this script is run without VSIX Installler present, it will fail.
-
 .PARAMETER Arguments
     Arguments to pass onwards to VSIX Installer.
 #>
@@ -178,7 +171,7 @@ if(-not $pathToVsix -or -not (Test-Path $pathToVSIX -PathType Leaf)) {
 
 Write-Host "Invoking VSIX Installer for downloaded VSIX at $pathToVsix..."
 
-Invoke-VsixInstaller "/a /q /f /sp $pathToVSIX" | Out-Null
+Invoke-VsixInstaller "/a /enableUpdate /q /f /sp $pathToVSIX" | Out-Null
 Wait-Process (Get-Process VsixInstaller).id -Timeout 600
 
 Write-Host "VSIX Installer Completed."
