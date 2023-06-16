@@ -8,7 +8,7 @@ setupTasks:
       packageName: AntosFakeExtension
   - task: install-vs-extension
     inputs:
-      packageName: VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects
+      packageName: GitHub.copilotvs
   - task: powershell
     inputs:
       command: calc
