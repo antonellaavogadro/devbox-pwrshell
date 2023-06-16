@@ -5,7 +5,7 @@ supportsHibernation: false
 setupTasks:
   - task: install-vs-extension
     inputs:
-      packageName: MikeWard-AnnArbor.VSColorOutput64
+      packageName: AntosFakeExtension
   - task: powershell
     inputs:
       command: calc
