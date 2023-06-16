@@ -6,6 +6,9 @@ setupTasks:
   - task: install-vs-extension
     inputs:
       packageName: AntosFakeExtension
+  - task: install-vs-extension
+    inputs:
+      packageName: VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects
   - task: powershell
     inputs:
       command: calc
