@@ -1,4 +1,21 @@
 <#
+.SPEC
+Specs for VS extension Installer
+    - receive the name of an extension (the MArketplace Item Name) from the user via Devbox.yaml and install
+    - specify version of the extension (optional)
+    - Return a clear and specific error message when the installation is unsuccessful 
+    - Return a clear and specific error message when the name of the extension is invalid 
+        . extension does not exist
+        . format of name is incorrect (Firstpart.Secondpart)
+    - Return clear and specific logs throughout the life of the process
+    - Return clear and accurate message when installation is successfull
+
+Stretch goals
+    - return a message if the extension is already installed
+    - support path to json exports of extensions
+    - command to disable already installed extensions?
+    - uninstall extensions?
+
 .SYNOPSIS
     Install an extension defined by the given item name to the latest Visual Studio instance
 .PARAMETER MarketplaceItemName 
@@ -6,7 +23,9 @@
 #>
 param (
         [Parameter(Mandatory)]
-        [string]$MarketplaceItemName
+        [string]$MarketplaceItemName,
+        [parameter(mandatory=$false)]
+        [string]$Version
     )
 
 <#
@@ -23,14 +42,21 @@ function Get-VSIXFromMarketplace
         $MarketplaceItemName
     )
 
-    # Declare exit code
+    # Declare exit code. Default to failure and set to 0 when operation succeeds.
     $exitCode = 1
 
     # Turn off progress to fix speed bug in Invoke-WebRequest
     $ProgressPreference = 'SilentlyContinue'
 
     $vswhereResult = Invoke-VsWhere "-prerelease -latest -format json" | ConvertFrom-Json
-    $instanceVersion = $vswhereResult.InstallationVersion
+    if (!$Version) {
+        $instanceVersion = $vswhereResult.InstallationVersion
+    } else {
+        $instanceVersion = $Version
+    }
+    
+    Write-Host $instanceVersion 
+    Write-Host $instanceVersion.GetType()
 
     $isolationInfo = ConvertFrom-StringData((Get-Content "$($vswhereResult.ProductPath -replace ".exe",".isolation.ini")" | Select-Object -Skip 2) -replace "\\","\\\\" -join "`n")
     $arch = If ($isolationInfo.ProductArch -eq "x64") { "amd64" } else { $isolationInfo.ProductArch }
@@ -126,7 +152,7 @@ function Assert-VsWherePresent
     Invokes VSIX Installer, if it exists, with the provided arguments.
 .DESCRIPTION
     Invokes VSIX Installer with the provided arguments.
-    If this script is run without VSIX Installler present, it will fail.
+    If this script is run without VSIX Installer present, it will fail.
 .PARAMETER Arguments
     Arguments to pass onwards to VSIX Installer.
 #>
@@ -149,6 +175,8 @@ function Invoke-VsixInstaller
 #>
 function Get-VsixInstallerPath
 {
+    $param = Join-Path -Path "${env:ProgramFiles(x86)}" -ChildPath "Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXInstaller.exe"
+    Write-Host $param
     return Join-Path -Path "${env:ProgramFiles(x86)}" -ChildPath "Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXInstaller.exe"
 }
 
@@ -161,6 +189,7 @@ function Assert-VsixInstallerPresent
     if(-not (Test-Path (Get-VsixInstallerPath)))
     {
         throw "VSIX Installer not found."
+        exit $exitcode
     }
 }
 
