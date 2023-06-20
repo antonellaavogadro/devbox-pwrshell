@@ -5,7 +5,8 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      command: | 
-      $Text = "Testing to Print:
-          Powershell Task"
-          echo $Text
+      command: $Text = "Testing to Print"
+
+  - task: powershell
+    inputs:
+        command: echo $Text
