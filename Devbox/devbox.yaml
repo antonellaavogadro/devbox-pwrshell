@@ -7,5 +7,9 @@ setupTasks:
     inputs:
       command: | 
         echo "Testing Powershell Task" >> C:\\powershell-test.txt
-            calc
-            
+        $shenanigansfile="C:\\shenanigans.txt"
+            Write-Host "This is a message that should be in the logs"
+            "We're testing multi-line powershell scripts" | Tee-Object -FilePath $shenanigansfile -Append
+            "Embedded into a single devbox.yaml" | Tee-Object -FilePath $shenanigansfile -Append
+            Write-Host "This should also go to the logs"
+        exit 0
