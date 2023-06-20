@@ -9,4 +9,7 @@ setupTasks:
 
   - task: powershell
     inputs:
-        command: echo $Text
+        command: 
+        - | 
+          echo "multiline commands"
+          calc
