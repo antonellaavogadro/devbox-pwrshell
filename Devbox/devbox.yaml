@@ -6,5 +6,5 @@ setupTasks:
   - task: powershell
     inputs:
       command: 
-      | 
+      - | 
         echo "Powershell Task"
