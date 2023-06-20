@@ -5,14 +5,7 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      command: 
-       - |
-        echo "running below scripts"
-        i=0; 
-        while true; 
-        do 
-          echo "$i: $(date)"; 
-          i=$((i+1)); 
-          sleep 1; 
-        done
-
+      command: | 
+      $Text = "Testing to Print:
+          Powershell Task"
+          echo $Text
