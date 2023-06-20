@@ -5,11 +5,6 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      command: $Text = "Testing to Print"
-
-  - task: powershell
-    inputs:
-        command: 
-        - | 
-          echo "multiline commands"
-            calc
+      command: 
+      | 
+        echo "Powershell Task"
