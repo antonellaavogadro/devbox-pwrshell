@@ -5,4 +5,7 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      command: echo "Testing Powershell Task" >> C:\\powershell-test.txt
+      command: 
+      - | 
+        echo "Testing Powershell Task" 
+          >> C:\\powershell-test.txt
