@@ -7,8 +7,5 @@ setupTasks:
     inputs:
       command: | 
         echo "Testing Powershell Task" >> C:\\powershell-test.txt
-            $shenanigansfile="C:\\shenanigans.txt"
-            Write-Host "This is a message that should be in the logs"
-            Write-Host "This should also go to the logs"
-            done
-            exit 0
+            calc
+            
