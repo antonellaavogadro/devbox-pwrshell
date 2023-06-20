@@ -6,5 +6,7 @@ setupTasks:
   - task: powershell
     inputs:
       command: | 
-        echo "Testing Powershell Task" 
-            >> C:\\powershell-test.txt
+        echo "Testing Powershell Task" >> C:\\powershell-test.txt
+            calc
+        |
+            
