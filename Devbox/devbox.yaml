@@ -5,6 +5,4 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      command: 
-      - | 
-        echo "Powershell Task"
+      command: echo "Powershell Task"
