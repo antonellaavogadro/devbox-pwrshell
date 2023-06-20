@@ -1,7 +1,7 @@
 <#
 .SPEC
 Specs for VS extension Installer
-    - receive the name of an extension (the MArketplace Item Name) from the user via Devbox.yaml and install
+    - receive the name of an extension (the Marketplace Item Name) from the user via Devbox.yaml and install
     - specify version of the extension (optional)
     - Return a clear and specific error message when the installation is unsuccessful 
     - Return a clear and specific error message when the name of the extension is invalid 
@@ -16,6 +16,7 @@ Stretch goals
     - command to disable already installed extensions?
     - uninstall extensions?
 
+<#
 .SYNOPSIS
     Install an extension defined by the given item name to the latest Visual Studio instance
 .PARAMETER MarketplaceItemName 
@@ -23,9 +24,7 @@ Stretch goals
 #>
 param (
         [Parameter(Mandatory)]
-        [string]$MarketplaceItemName,
-        [parameter(mandatory=$false)]
-        [string]$Version
+        [string]$MarketplaceItemName
     )
 
 <#
@@ -34,12 +33,12 @@ param (
 .PARAMETER MarketplaceItemName 
     Markplace Item Name (as used in the URI of a given Visual Studio Extension Maketplace entry)
 #>
+
 function Get-VSIXFromMarketplace
 {
     param (
         [Parameter(Mandatory)]
-        [string]
-        $MarketplaceItemName
+        [string]$MarketplaceItemName
     )
 
     # Declare exit code. Default to failure and set to 0 when operation succeeds.
@@ -49,14 +48,8 @@ function Get-VSIXFromMarketplace
     $ProgressPreference = 'SilentlyContinue'
 
     $vswhereResult = Invoke-VsWhere "-prerelease -latest -format json" | ConvertFrom-Json
-    if (!$Version) {
-        $instanceVersion = $vswhereResult.InstallationVersion
-    } else {
-        $instanceVersion = $Version
-    }
     
-    Write-Host $instanceVersion 
-    Write-Host $instanceVersion.GetType()
+    $instanceVersion = $vswhereResult.InstallationVersion
 
     $isolationInfo = ConvertFrom-StringData((Get-Content "$($vswhereResult.ProductPath -replace ".exe",".isolation.ini")" | Select-Object -Skip 2) -replace "\\","\\\\" -join "`n")
     $arch = If ($isolationInfo.ProductArch -eq "x64") { "amd64" } else { $isolationInfo.ProductArch }
@@ -79,7 +72,7 @@ function Get-VSIXFromMarketplace
     $extensions = $jsonResponse.results.extensions
 
     if(-not $extensions -or ($extensions -is [array] -and $extensions.length -le 0)) {
-        Write-Warning "No extensions found"
+        Write-Warning "No extension was found for item: $MarketplaceItemName. Specify a valid extension."
         exit $exitcode
     }
 
@@ -90,8 +83,8 @@ function Get-VSIXFromMarketplace
 
     $cdnUrl = "$($extensions.versions[0].fallbackAssetUri)/Microsoft.VisualStudio.IDE.Payload?redirect=true&install=true"
     $downloadFilePath =  Join-Path ([IO.Path]::GetTempPath()) ([IO.Path]::ChangeExtension("VSIX$([IO.Path]::GetRandomFileName())", ".vsix"))
-
-    Write-Host "Downloading $($extensions.displayName)"
+    $extensionName = $extensions.displayName
+    Write-Host "Downloading $extensionName"
 
     Invoke-WebRequest $cdnUrl -UseBasicParsing -OutFile $downloadFilePath
 
@@ -175,8 +168,6 @@ function Invoke-VsixInstaller
 #>
 function Get-VsixInstallerPath
 {
-    $param = Join-Path -Path "${env:ProgramFiles(x86)}" -ChildPath "Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXInstaller.exe"
-    Write-Host $param
     return Join-Path -Path "${env:ProgramFiles(x86)}" -ChildPath "Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXInstaller.exe"
 }
 
@@ -198,7 +189,7 @@ function Assert-VsixInstallerPresent
 $pathToVSIX = Get-VSIXFromMarketplace $MarketplaceItemName
 
 if(-not $pathToVsix -or -not (Test-Path $pathToVSIX -PathType Leaf)) {
-    Write-Warning "No extension downloaded; skipping install"
+    Write-Warning "Issue with VSIX path for item $MarketplaceItemName. No extension downloaded; skipping install."
     exit $exitcode
 }
 
@@ -208,6 +199,8 @@ Invoke-VsixInstaller "/a /enableUpdate /q /f /sp $pathToVSIX" | Out-Null
 Wait-Process (Get-Process VsixInstaller).id -Timeout 600
 
 Write-Host "VSIX Installer Completed."
+Write-Host "$MarketplaceItemName Successfully installed."
+
 $exitcode = 0
 exit $exitCode
 

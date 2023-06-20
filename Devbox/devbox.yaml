@@ -11,4 +11,5 @@ setupTasks:
       packageName: GitHub.copilotvs
   - task: powershell
     inputs:
-      command: calc
+      command: $Procs = "Testing Powershell Task" 
+       | Out-File -FilePath C:\\powershell-test.txt
