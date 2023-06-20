@@ -3,13 +3,7 @@ image: microsoftwindowsdesktop_windows-ent-cpc_win11-22h2-ent-cpc-m365@1.0.0
 hostInformation: general_a_8c32gb256ssd_v1
 supportsHibernation: false
 setupTasks:
-  - task: install-vs-extension
-    inputs:
-      packageName: AntosFakeExtension
-  - task: install-vs-extension
-    inputs:
-      packageName: GitHub.copilotvs
   - task: powershell
     inputs:
-      command: $Procs = "Testing Powershell Task" 
-       | Out-File -FilePath C:\\powershell-test.txt
+      command: echo "Testing 
+       | Powershell Task" >> C:\\powershell-test.txt
