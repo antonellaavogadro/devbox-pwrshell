@@ -5,10 +5,4 @@ supportsHibernation: false
 setupTasks:
   - task: powershell
     inputs:
-      command: |
-      "`$shenanigansfile='C:\\Temp\\shenanigans.txt'
-          Write-Host 'This is a message that should be in the logs'
-          'We are testing multi-line powershell scripts' | Tee-Object -FilePath `$shenanigansfile -Append
-          'Embedded into a single devbox.yaml' | Tee-Object -FilePath `$shenanigansfile -Append
-          Write-Host 'This should also go to the logs'
-          exit 0"
+      command: calc
