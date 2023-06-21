@@ -8,4 +8,4 @@ setupTasks:
       command: | 
         $"path = $env:USERPROFILE + "\test.txt"
             New-Item -Path $path -ItemType File
-            Add-Content -Path $path -Value "Hello""
+            Add-Content -Path $path -Value 'Hello'"
