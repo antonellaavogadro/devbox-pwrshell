@@ -27,7 +27,7 @@ Write-Output "Command exited with code $commandExitCode"
 
 # Clean up the command file
 Write-Output "Deleting command file $commandFile"
-# Remove-Item -Path $commandFile
+Remove-Item -Path $commandFile
 
 # Task powershell scripts should always end with an
 # exit code reported up to the runner agent.
