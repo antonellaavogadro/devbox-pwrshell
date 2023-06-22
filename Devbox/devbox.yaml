@@ -23,7 +23,7 @@ setupTasks:
         Write-Host 'Adding two numbers'
         Write-Host `$value1
         `$value3= `[int]`$value1 + `[int]`$value2
-        `$sumfile= `""`$env:TEMP\\sumfile.txt"`"
+        `$sumfile= `"C:\\sumfile.txt`"
         `$value3 | Tee-Object -FilePath sumfile -Append
         Write-Host 'This should also go to the logs'
         exit 0  
