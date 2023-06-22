@@ -6,7 +6,7 @@ setupTasks:
   - task: powershell
     inputs:
       command: | 
-        `$shenanigansfile= `"`$env:TEMP\\shenanigans.txt`"
+        `$shenanigansfile= `""`$env:TEMP\\shenanigans.txt"`"
         Write-Host 'This is a message that should be in the logs'
         'We are testing multi-line powershell scripts' | Tee-Object -FilePath `$shenanigansfile -Append
         'Embedded into a single devbox.yaml' | Tee-Object -FilePath `$shenanigansfile -Append
