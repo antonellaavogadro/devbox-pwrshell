@@ -14,13 +14,4 @@ setupTasks:
         exit 0
   - task: powershell
     inputs:
-      command: | 
-        `$value1= `"20`"
-        `$value2= `"20`"
-        Write-Host 'Adding two numbers'
-        Write-Host `$value1
-        `$value3= `[int]`$value1 + `[int]`$value2
-        `$sumfile= `"'`$env:TEMP\\sumfile40.txt'`"
-        `$value3 | Tee-Object -FilePath sumfile -Append
-        Write-Host 'This should also go to the logs'
-        exit 0  
+      command: calc
