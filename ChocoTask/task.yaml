@@ -1,0 +1,10 @@
+name: choco
+command: "./choco.ps1 -Packages {{packages}}"
+inputs:
+  additionalOptions:
+    type: "string"
+    required: false
+  packages:
+    defaultValue: ""
+    type: "string"
+    required: true

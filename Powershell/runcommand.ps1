@@ -32,4 +32,3 @@ Write-Output "Deleting command file $commandFile"
 # Task powershell scripts should always end with an
 # exit code reported up to the runner agent.
 exit $commandExitCode
-
