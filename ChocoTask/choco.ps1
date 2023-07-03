@@ -4,7 +4,11 @@ param(
     [string] $Packages,
 
     [Parameter()]
-    [string] $AdditionalOptions
+    [string] $AdditionalOptions,
+
+    [Parameter()]
+	[hashtable] $PackageVersions = @{} # Add new parameter to allow package version definition
+)
 )
 
 ###################################################################################################
@@ -48,7 +52,7 @@ function Install-Packages
         [string] $Packages,
         [string] $AdditionalOptions,
         [StringSplitOptions] $SplitOptions = [StringSplitOptions]::RemoveEmptyEntries,
-        [hashtable] $PackageVersions = @{} # Add new parameter to allow package version definition
+        $PackageVersions
     )
 
     # Split packages and their versions.
@@ -69,6 +73,8 @@ function Install-Packages
         Invoke-ExpressionImpl -Expression $expression
     }
 }
+
+# Install-Packages -ChocoExePath "C:\ProgramData\Chocolatey\choco.exe" -Packages "package1, package2" -AdditionalOptions "--ignore-dependencies" -PackageVersions @{ 'package1'='1.0.1'; 'package2'='2.3.4' }
 
 function Invoke-ExpressionImpl
 {
@@ -111,6 +117,6 @@ Write-Host 'Ensuring latest Chocolatey version is installed.'
 Ensure-Chocolatey -ChocoExePath "$choco"
 
 Write-Host "Preparing to install Chocolatey packages: $Packages."
-Install-Packages -ChocoExePath "$choco" -Packages $Packages
+Install-Packages -ChocoExePath "$choco" -Packages $Packages -PackageVersions $PackageVersions -AdditionalOptions $AdditionalOptions 
 
 Write-Host "`nThe artifact was applied successfully.`n"
