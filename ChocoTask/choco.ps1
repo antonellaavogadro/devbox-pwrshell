@@ -9,7 +9,6 @@ param(
     [Parameter()]
 	[hashtable] $PackageVersions = @{} # Add new parameter to allow package version definition
 )
-)
 
 ###################################################################################################
 #
