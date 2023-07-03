@@ -45,12 +45,27 @@ function Install-Packages
     [CmdletBinding()]
     param(
         [string] $ChocoExePath,
-        $Packages
+        [string] $Packages,
+        [string] $AdditionalOptions,
+        [StringSplitOptions] $SplitOptions = [StringSplitOptions]::RemoveEmptyEntries,
+        [hashtable] $PackageVersions = @{} # Add new parameter to allow package version definition
     )
 
-    $Packages = $Packages.split(',; ', [StringSplitOptions]::RemoveEmptyEntries)
-    $Packages | % {
-        $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $AdditionalOptions $_"
+    # Split packages and their versions.
+    $PackageList = @()
+    foreach ($pkg in $Packages.Split(',; ', $SplitOptions)) {
+        $name, $version = $pkg.Split('=', 2)
+        $PackageList += @(New-Object PSObject -Property @{ Name = $name; Version = $version })
+    }
+
+    # Install each package and version.
+    foreach ($pkg in $PackageList) {
+        $name = $pkg.Name
+        $version = ""
+        if ($PackageVersions.ContainsKey($name)) { # Check if the version was defined
+            $version = "--version " + $PackageVersions[$name]
+        }
+        $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $AdditionalOptions $name $version" # Change the command to install packages and versions
         Invoke-ExpressionImpl -Expression $expression
     }
 }
