@@ -14,10 +14,6 @@ setupTasks:
         exit 0
   - task: powershell
     inputs:
-<<<<<<< HEAD
-<<<<<<< HEAD
-      command: calc
-=======
       command: | 
         `$value1= `"20`"
         `$value2= `"20`"
@@ -28,7 +24,3 @@ setupTasks:
         `$value3 | Tee-Object -FilePath sumfile -Append
         Write-Host 'This should also go to the logs'
         exit 0  
->>>>>>> d6bf0e8 (testing other ps commands)
-=======
-      command: calc
->>>>>>> e401d5c (adding calculator task)
