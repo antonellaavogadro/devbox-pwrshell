@@ -15,3 +15,4 @@ setupTasks:
   - task: choco
     inputs:
       packages: "googlechrome"
+      PackageVersions: "{ 'googlechrome' = '93.0.4577.63'}"
