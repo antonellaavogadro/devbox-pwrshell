@@ -1,5 +1,5 @@
 name: choco
-command: "./choco.ps1 -Packages {{packages}}"
+command: "./choco.ps1 -Packages {{packages}} -PackageVersions {{PackageVersions}}"
 inputs:
   additionalOptions:
     type: "string"
@@ -8,3 +8,7 @@ inputs:
     defaultValue: ""
     type: "string"
     required: true
+  PackageVersions:
+    defaultValue: ""
+    type: "hashtable"
+    required: false
