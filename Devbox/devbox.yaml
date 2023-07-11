@@ -16,6 +16,10 @@ setupTasks:
     inputs:
       packages: "git"
       PackageVersions: {"git":"2.38.1"}
+  - task: choco
+    inputs:
+      packages: "googlechrome"
+
   # - task: powershell
   #   inputs:
   #     command: | 
