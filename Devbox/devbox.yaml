@@ -15,3 +15,7 @@ setupTasks:
   - task: choco
     inputs:
       package: python@3.11.4
+  - task: powershell
+      inputs:
+        command: "Get-Date"
+        workingDirectory: "."
