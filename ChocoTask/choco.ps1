@@ -1,13 +1,10 @@
 [CmdletBinding()]
 param(
     [Parameter()]
-    [string] $Packages,
+    [string] $Package,
 
     [Parameter()]
-    [string] $AdditionalOptions,
-
-    [Parameter()]
-	[hashtable] $PackageVersions = @{} # Add new parameter to allow package version definition
+    [bool] $ignoreChecksums
 )
 
 ###################################################################################################
@@ -46,37 +43,34 @@ function Ensure-Chocolatey
     }
 }
 
-function Install-Packages
+function Install-Package
 {
     [CmdletBinding()]
     param(
         [string] $ChocoExePath,
-        [string] $Packages,
-        [string] $AdditionalOptions,
-        [StringSplitOptions] $SplitOptions = [StringSplitOptions]::RemoveEmptyEntries,
-        $PackageVersions
+        [string] $Package,
+        [bool] $ignoreChecksum
     )
 
-    # Split packages and their versions.
-    $PackageList = @()
-    foreach ($pkg in $Packages.Split(',; ', $SplitOptions)) {
-        $name, $version = $pkg.Split('=', 2)
-        $PackageList += @(New-Object PSObject -Property @{ Name = $name; Version = $version })
-    }
-
-    # Install each package and version.
-    foreach ($pkg in $PackageList) {
-        $name = $pkg.Name
-        $version = ""
-        if ($PackageVersions.ContainsKey($name)) { # Check if the version was defined
-            $version = "--version " + $PackageVersions[$name]
+    # Split package and version 
+    if ($Package.Contains('@')) {
+        $pkgName, $pkgVersion = $Package.Split('@')
+        if ($ignoreChecksum) {
+            $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure --ignorechecksums $pkgName --version $pkgVersion"
+        } else {
+            $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $pkgName --version $pkgVersion"
         }
-        $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $AdditionalOptions $name $version" # Change the command to install packages and versions
-        Execute -Expression $expression
+    } else {
+        $pkgName = $Package
+        if ($ignoreChecksum) {
+            $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure --ignorechecksums $pkgName"
+        } else {
+            $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $pkgName"
+        }
     }
-}
 
-# Install-Packages -ChocoExePath "C:\ProgramData\Chocolatey\choco.exe" -Packages "package1, package2" -AdditionalOptions "--ignore-dependencies" -PackageVersions @{ 'package1'='1.0.1'; 'package2'='2.3.4' }
+    Execute -Expression $expression
+}
 
 function Execute
 {
@@ -92,6 +86,7 @@ function Execute
     # even if the system has pwsh.exe.
     $process = Start-Process powershell.exe -ArgumentList "-Command $Expression" -NoNewWindow -PassThru -Wait
     $expError = $process.ExitCode.Exception
+    
     # This check allows us to capture cases where the command we execute exits with an error code.
     # In that case, we do want to throw an exception with whatever is in stderr. Normally, when
     # Invoke-Expression throws, the error will come the normal way (i.e. $Error) and pass via the
@@ -108,7 +103,7 @@ function Execute
         }
         else
         {
-            throw "Installation failed ($process.ExitCode). Please see the Chocolatey logs in %ALLUSERSPROFILE%\chocolatey\logs folder for details."
+            throw "Installation failed ($LastExitCode). Please see the Chocolatey logs in %ALLUSERSPROFILE%\chocolatey\logs folder for details."
         }
     }
 }
@@ -122,7 +117,7 @@ function Execute
 Write-Host 'Ensuring latest Chocolatey version is installed.'
 Ensure-Chocolatey -ChocoExePath "$choco"
 
-Write-Host "Preparing to install Chocolatey packages: $Packages."
-Install-Packages -ChocoExePath "$choco" -Packages $Packages -$PackageVersions -AdditionalOptions $AdditionalOptions
+Write-Host "Preparing to install Chocolatey package: $Package."
+Install-Package -ChocoExePath "$choco" -Package $Package -ignoreChecksum $ignoreChecksum
 
 Write-Host "`nThe artifact was applied successfully.`n"
