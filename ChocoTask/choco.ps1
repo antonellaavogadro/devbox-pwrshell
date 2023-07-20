@@ -7,7 +7,7 @@ param(
     [string] $Version,
 
     [Parameter()]
-    [bool] $ignoreChecksums
+    [string] $ignoreChecksums
 )
 
 ###################################################################################################
@@ -53,10 +53,10 @@ function Install-Package
         [string] $ChocoExePath,
         [string] $Package,
         [string] $Version,
-        [bool] $ignoreChecksums
+        [string] $ignoreChecksums
     )
 
-    if ($ignoreChecksums) {
+    if ($ignoreChecksums -eq "true") {
         $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure --ignorechecksums $Package --version $Version"
     } else {
         $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $Package --version $Version"
