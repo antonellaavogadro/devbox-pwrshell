@@ -1,26 +1,15 @@
-name: powershell-customization-test
-image: microsoftwindowsdesktop_windows-ent-cpc_win11-22h2-ent-cpc-m365@1.0.0
+name: first-git-devbox-definition
+image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
+
 hostInformation: general_a_8c32gb256ssd_v1
-supportsHibernation: false
+
 setupTasks:
-  - task: powershell
-    inputs:
-      command: | 
-        `$shenanigansfile= `""`$env:TEMP\\shenanigans.txt"`"
-        Write-Host 'This is a message that should be in the logs'
-        'We are testing multi-line powershell scripts' | Tee-Object -FilePath shenanigansfile -Append
-        'Embedded into a single devbox.yaml' | Tee-Object -FilePath shenanigansfile -Append
-        Write-Host 'This should also go to the logs'
-        exit 0
-  - task: choco
-    inputs:
-      package: "googlechrome"
-      ignoreChecksums: true
-  - task: choco
-    inputs:
-      package: "firefox"
-      ignoreChecksums: True
-  - task: choco
-    inputs:
-      package: "firefox"
-      ignoreChecksums: $True
+    - task: magic
+      inputs:
+        package: notepadplusplus.install
+        version: 1.0
+    - task: magic
+      inputs:
+        package: notepadplusplus.install
+        version: 1.0
+supportsHibernation: true
