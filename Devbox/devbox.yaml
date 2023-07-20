@@ -15,11 +15,11 @@ setupTasks:
   - task: choco
     inputs:
       package: "googlechrome"
-      ignoreChecksums: true
+      ignoreChecksums: 1
   - task: choco
     inputs:
       package: "firefox"
-      ignoreChecksums: True
+      ignoreChecksums: 0
   - task: choco
     inputs:
       package: "firefox"
