@@ -2,5 +2,31 @@ name: first-git-devbox-definition
 image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
 
 hostInformation: general_a_8c32gb256ssd_v1
+<<<<<<< HEAD
 
 supportsHibernation: true
+=======
+supportsHibernation: false
+setupTasks:
+  - task: powershell
+    inputs:
+      command: | 
+        `$shenanigansfile= `""`$env:TEMP\\shenanigans.txt"`"
+        Write-Host 'This is a message that should be in the logs'
+        'We are testing multi-line powershell scripts' | Tee-Object -FilePath shenanigansfile -Append
+        'Embedded into a single devbox.yaml' | Tee-Object -FilePath shenanigansfile -Append
+        Write-Host 'This should also go to the logs'
+        exit 0
+  - task: choco
+    inputs:
+      package: "googlechrome"
+      ignoreChecksums: 1
+  - task: choco
+    inputs:
+      package: "firefox"
+      ignoreChecksums: 0
+  - task: choco
+    inputs:
+      package: "firefox"
+      ignoreChecksums: $True
+>>>>>>> 96d24d25419b8b1a2f61ccfaf9d67f4e2aad35d3
