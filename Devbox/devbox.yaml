@@ -1,15 +1,23 @@
 name: powershell-customization-test
 image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
-
 hostInformation: general_i_16c64gb512ssd_v2
-
+supportsHibernation: false
 setupTasks:
-    - task: magic
-      inputs:
-        package: notepadplusplus.install
-        version: 1.0
-    - task: magic
-      inputs:
-        package: notepadplusplus.install
-        version: 1.0
-supportsHibernation: true
+  - task: powershell
+    inputs:
+      command: | 
+        `$shenanigansfile= `""`$env:TEMP\\shenanigans.txt"`"
+        Write-Host 'This is a message that should be in the logs'
+        'We are testing multi-line powershell scripts' | Tee-Object -FilePath shenanigansfile -Append
+        'Embedded into a single devbox.yaml' | Tee-Object -FilePath shenanigansfile -Append
+        Write-Host 'This should also go to the logs'
+        exit 0
+  - task: choco
+    inputs:
+      package: "vscode"
+      version: "1.80.0"
+      ignoreChecksums: true
+  - task: choco
+    inputs:
+      package: "firefox"
+      ignoreChecksums: true
