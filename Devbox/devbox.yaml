@@ -1,4 +1,4 @@
-name: first-git-devbox-definition
+name: powershell-customization-test
 image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
 
 hostInformation: general_a_8c32gb256ssd_v1
