@@ -3,13 +3,4 @@ image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m36
 
 hostInformation: general_a_8c32gb256ssd_v1
 
-setupTasks:
-    - task: magic
-      inputs:
-        package: notepadplusplus.install
-        version: 1.0
-    - task: magic
-      inputs:
-        package: notepadplusplus.install
-        version: 1.0
 supportsHibernation: true
