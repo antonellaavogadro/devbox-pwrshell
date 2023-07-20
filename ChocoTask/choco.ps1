@@ -56,10 +56,10 @@ function Install-Package
         [string] $ignoreChecksums
     )
 
+    $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $Package --version $Version"
+    
     if ($ignoreChecksums -eq "true") {
-        $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure --ignorechecksums $Package --version $Version"
-    } else {
-        $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $Package --version $Version"
+        $expression = "$expression --ignorechecksums"
     }
 
     Execute -Expression $expression
