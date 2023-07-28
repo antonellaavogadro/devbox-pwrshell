@@ -1,5 +1,5 @@
 name: choco
-command: "Start-Transcript ./choco.ps1 -Package {{package}} -Version {{version}}  -ignoreChecksums {{ignoreChecksums}}  Stop-Transcript"
+command: "./choco.ps1 -Package {{package}} -Version {{version}}  -ignoreChecksums {{ignoreChecksums}}"
 inputs:
   package:
     defaultValue: ""
