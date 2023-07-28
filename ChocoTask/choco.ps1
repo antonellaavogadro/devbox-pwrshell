@@ -9,6 +9,7 @@ param(
     [Parameter()]
     [string] $ignoreChecksums
 )
+Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
 
 if (-not $Package) {
     throw "Package parameter is mandatory. Please provide a value for the Package parameter."
@@ -115,6 +116,7 @@ function Execute
 
 Write-Host 'Ensuring latest Chocolatey version is installed.'
 Ensure-Chocolatey -ChocoExePath "$choco"
+Stop-Transcript
 
 Write-Host "Preparing to install Chocolatey package: $Package."
 Install-Package -ChocoExePath "$choco" -Package $Package -Version $Version -ignoreChecksums $ignoreChecksums
