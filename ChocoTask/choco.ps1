@@ -7,7 +7,7 @@ param(
     [string] $Version,
  
     [Parameter()]
-    [string] $ignoreChecksums
+    [string] $IgnoreChecksums
 )
 
 Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
@@ -27,7 +27,7 @@ if (-not $Package) {
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Expected path of the choco.exe file.
-$choco = "$Env:ProgramData/chocolatey/choco.exe"
+$Choco = "$Env:ProgramData/chocolatey/choco.exe"
 
 ###################################################################################################
 #
@@ -63,7 +63,7 @@ function Install-Package
         [string] $ChocoExePath,
         [string] $Package,
         [string] $Version,
-        [string] $ignoreChecksums
+        [string] $IgnoreChecksums
     )
 
     $expression = "$ChocoExePath install $Package"
@@ -74,7 +74,7 @@ function Install-Package
 
     $expression = "$expression -y -f --acceptlicense --no-progress --stoponfirstfailure"
     
-    if ($ignoreChecksums -eq "true") {
+    if ($IgnoreChecksums -eq "true") {
         $expression = "$expression --ignorechecksums"
     }
 
@@ -123,10 +123,10 @@ function Execute
 #
 
 Write-Host 'Ensuring latest Chocolatey version is installed.'
-Ensure-Chocolatey -ChocoExePath "$choco"
+Ensure-Chocolatey -ChocoExePath "$Choco"
 
 Write-Host "Preparing to install Chocolatey package: $Package."
-Install-Package -ChocoExePath "$choco" -Package $Package -Version $Version -ignoreChecksums $ignoreChecksums
+Install-Package -ChocoExePath "$Choco" -Package $Package -Version $Version -IgnoreChecksums $IgnoreChecksums
 
 Write-Host "`nThe artifact was applied successfully.`n"
 

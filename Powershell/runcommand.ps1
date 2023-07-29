@@ -1,34 +1,37 @@
 param(
-     [Parameter()]
-     [string]$command
+    [Parameter()]
+    [string]$Command,
+    [Parameter()]
+    [string]$WorkingDirectory
  )
+Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
+# Check if workingDirectory is set and not empty and if so, change to it.
+if ($WorkingDirectory -and $WorkingDirectory -ne "") {
+    # Check if the working directory exists.
+    if (-not (Test-Path $WorkingDirectory)) {
+        # Create the working directory if it does not exist.
+        Write-Output "Creating working directory $WorkingDirectory"
+        New-Item -ItemType Directory -Force -Path $WorkingDirectory
+    }
 
-# We are adding this file as an additional layer
-# between the devbox.yaml file invoking this task
-# and the actual execution of the command.
-# The main goal is to ensure we do any additional
-# I/O here ahead of running the command on the metal.
+    Write-Output "Changing to working directory $WorkingDirectory"
+    Set-Location $WorkingDirectory
+}
+
 # Note we're calling powershell.exe directly, instead
 # of running Invoke-Expression, as suggested by
 # https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/avoid-using-invoke-expression?view=powershell-7.3
-# Also, note that this will run powershell.exe
+# Note that this will run powershell.exe
 # even if the system has pwsh.exe.
-
-# Write the contents of the command string to a temporary file and append the extension .ps1 to it
-$commandFile = [System.IO.Path]::GetTempFileName() + ".ps1"
-Write-Output "Writing command to $commandFile"
-$command | Out-File -FilePath $commandFile -Encoding ascii
-
-# run the command file using powershell.exe
-Write-Output "Running command $commandFile"
-powershell.exe -File $commandFile
-$commandExitCode = $LASTEXITCODE
-Write-Output "Command exited with code $commandExitCode"
-
-# Clean up the command file
-Write-Output "Deleting command file $commandFile"
-# Remove-Item -Path $commandFile
+Write-Output "Running command $Command"
+powershell.exe -Command $Command
+$CommandExitCode = $LASTEXITCODE
+Write-Output "Command exited with code $CommandExitCode"
 
 # Task powershell scripts should always end with an
 # exit code reported up to the runner agent.
-exit $commandExitCode
+# This is how the runner agent knows whether the
+# command succeeded or failed.
+exit $CommandExitCode
+
+Stop-Transcript
