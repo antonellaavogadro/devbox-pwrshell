@@ -10,6 +10,8 @@ param(
     [string] $ignoreChecksums
 )
 
+Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
+
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
 
 if (-not $Package) {
@@ -128,3 +130,4 @@ Install-Package -ChocoExePath "$choco" -Package $Package -Version $Version -igno
 
 Write-Host "`nThe artifact was applied successfully.`n"
 
+Stop-Transcript
