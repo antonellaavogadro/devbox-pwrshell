@@ -5,16 +5,16 @@ param(
 
     [Parameter()]
     [string] $Version,
-
+ 
     [Parameter()]
     [string] $ignoreChecksums
 )
 
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
+
 if (-not $Package) {
     throw "Package parameter is mandatory. Please provide a value for the Package parameter."
 }
-
-
 
 ###################################################################################################
 #
@@ -37,17 +37,19 @@ function Ensure-Chocolatey
     [CmdletBinding()]
     param(
         [string] $ChocoExePath
-    )
+    ) 
 
     if (-not (Test-Path "$ChocoExePath"))
     {
         Set-ExecutionPolicy Bypass -Scope Process -Force
-        $installScript = (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
-        $expression = "$installScript | powershell.exe -NoProfile -ExecutionPolicy Bypass -Command -"
-        Execute -Expression $expression
-        if ($LastExitCode -eq 3010)
-        {
-            Write-Host 'The recent changes indicate a reboot is necessary. Please reboot at your earliest convenience.'
+        $installScriptPath = Join-Path $env:TEMP "Choco-Install.ps1"
+        Invoke-WebRequest -Uri 'https://chocolatey.org/install.ps1' -OutFile $installScriptPath
+
+        try {
+            powershell.exe -NoProfile -ExecutionPolicy Bypass -File $installScriptPath
+
+        } finally {
+            Remove-Item $installScriptPath
         }
     }
 }
@@ -62,13 +64,19 @@ function Install-Package
         [string] $ignoreChecksums
     )
 
-    $expression = "$ChocoExePath install -y -f --acceptlicense --no-progress --stoponfirstfailure $Package --version $Version"
+    $expression = "$ChocoExePath install $Package"
+    
+    if ($Version){
+        $expression = "$expression --version $Version"
+    }
+
+    $expression = "$expression -y -f --acceptlicense --no-progress --stoponfirstfailure"
     
     if ($ignoreChecksums -eq "true") {
         $expression = "$expression --ignorechecksums"
     }
 
-    Execute -Expression $expression
+    powershell.exe $expression
 }
 
 function Execute
@@ -107,7 +115,6 @@ function Execute
     }
 }
 
-
 ###################################################################################################
 #
 # Main execution block.
@@ -120,3 +127,4 @@ Write-Host "Preparing to install Chocolatey package: $Package."
 Install-Package -ChocoExePath "$choco" -Package $Package -Version $Version -ignoreChecksums $ignoreChecksums
 
 Write-Host "`nThe artifact was applied successfully.`n"
+
