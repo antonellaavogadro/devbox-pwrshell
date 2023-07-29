@@ -51,7 +51,7 @@ function Ensure-Chocolatey
             powershell.exe -NoProfile -ExecutionPolicy Bypass -File $installScriptPath
 
         } finally {
-            Remove-Item $installScriptPath
+            # Remove-Item $installScriptPath
         }
     }
 }
