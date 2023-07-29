@@ -3,9 +3,6 @@ image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m36
 hostInformation: general_a_8c32gb256ssd_v1
 supportsHibernation: false
 setupTasks:
-  - task: powershell
-    inputs:
-      command: calc
   - task: choco
     inputs:
       package: "vscode"
