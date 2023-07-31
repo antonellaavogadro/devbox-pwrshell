@@ -10,7 +10,7 @@ param(
     [string] $IgnoreChecksums
 )
 
-Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
+Start-Transcript -Path C:\PerfLogs\chocoTranscript.log -Append
 
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
 
