@@ -3,9 +3,7 @@ image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m36
 hostInformation: general_a_8c32gb256ssd_v1
 supportsHibernation: false
 setupTasks:
-  - task: install-vs-extension
-    inputs:
-      marketplaceItemName: "MikeWard-AnnArbor.VSColorOutput64"
+  - task: choco
     inputs:
       package: "firefox"
       ignoreChecksums: true
@@ -13,3 +11,7 @@ setupTasks:
     inputs:
       package: "googlechrome"
       ignoreChecksums: true
+  - task: powershell
+    inputs:
+      command: New-Item -ItemType File -Path "$env:USERPROFILE\Documents\example.txt" -Value "howdy"
+      
