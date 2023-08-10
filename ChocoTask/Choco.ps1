@@ -10,6 +10,8 @@ param(
     [string] $IgnoreChecksums
 )
 
+Start-Transcript -Path C:\PerfLogs\chocoTranscript.log -Append
+
 if (-not $Package) {
     throw "Package parameter is mandatory. Please provide a value for the Package parameter."
 }
@@ -129,3 +131,5 @@ Write-Host "Preparing to install Chocolatey package: $Package."
 Install-Package -ChocoExePath "$Choco" -Package $Package -Version $Version -IgnoreChecksums $IgnoreChecksums
 
 Write-Host "`nThe artifact was applied successfully.`n"
+
+Stop-Transcript
