@@ -5,14 +5,13 @@ supportsHibernation: false
 setupTasks:
   - task: choco
     inputs:
-      package: "vscode"
-      version: "1.80.0"
-      ignoreChecksums: true
-  - task: choco
-    inputs:
       package: "firefox"
       ignoreChecksums: true
   - task: choco
     inputs:
       package: "googlechrome"
       ignoreChecksums: true
+  - task: powershell
+    inputs:
+      command: New-Item -ItemType File -Path "$env:USERPROFILE\Documents\example.txt" -Value "howdy"
+      

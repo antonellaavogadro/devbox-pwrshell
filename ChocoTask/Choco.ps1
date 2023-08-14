@@ -10,6 +10,8 @@ param(
     [string] $IgnoreChecksums
 )
 
+Start-Transcript -Path C:\PerfLogs\chocoTranscript.log -Append
+
 if (-not $Package) {
     throw "Package parameter is mandatory. Please provide a value for the Package parameter."
 }
@@ -46,9 +48,9 @@ function Ensure-Chocolatey
         try {
             Execute -File $installScriptPath
         } finally {
-            #Remove-Item $installScriptPath
+            Remove-Item $installScriptPath
         }
-        
+
         if ($LastExitCode -eq 3010)
         {
             Write-Host 'The recent changes indicate a reboot is necessary. Please reboot at your earliest convenience.'
@@ -106,6 +108,9 @@ function Execute
     # capture the exit code from the process
     $processExitCode = $LASTEXITCODE
 
+    $process = Start-Process powershell.exe -ArgumentList "-File $File"
+    $expError = $process.ExitCode.Exception
+    
     # This check allows us to capture cases where the command we execute exits with an error code.
     # In that case, we do want to throw an exception with whatever is in stderr. Normally, when
     # Invoke-Expression throws, the error will come the normal way (i.e. $Error) and pass via the
@@ -140,3 +145,5 @@ Write-Host "Preparing to install Chocolatey package: $Package."
 Install-Package -ChocoExePath "$Choco" -Package $Package -Version $Version -IgnoreChecksums $IgnoreChecksums
 
 Write-Host "`nThe artifact was applied successfully.`n"
+
+Stop-Transcript
