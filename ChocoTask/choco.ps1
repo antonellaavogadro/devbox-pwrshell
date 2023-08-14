@@ -10,8 +10,6 @@ param(
     [string] $IgnoreChecksums
 )
 
-Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
-
 if (-not $Package) {
     throw "Package parameter is mandatory. Please provide a value for the Package parameter."
 }
@@ -48,7 +46,7 @@ function Ensure-Chocolatey
         try {
             Execute -File $installScriptPath
         } finally {
-            Remove-Item $installScriptPath
+            #Remove-Item $installScriptPath
         }
         
         if ($LastExitCode -eq 3010)
@@ -88,7 +86,7 @@ function Install-Package
     Write-Host "File path $packageScriptPath"
 
     Execute -File $packageScriptPath
-    Remove-Item $packageScriptPath
+    #Remove-Item $packageScriptPath
 }
 
 function Execute
@@ -103,7 +101,7 @@ function Execute
     # https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/avoid-using-invoke-expression?view=powershell-7.3
     # Note that this will run powershell.exe
     # even if the system has pwsh.exe.
-    powershell.exe -File $File -NoProfile -NonInteractive -NoLogo
+    powershell.exe -File $File
 
     # capture the exit code from the process
     $processExitCode = $LASTEXITCODE
@@ -142,5 +140,3 @@ Write-Host "Preparing to install Chocolatey package: $Package."
 Install-Package -ChocoExePath "$Choco" -Package $Package -Version $Version -IgnoreChecksums $IgnoreChecksums
 
 Write-Host "`nThe artifact was applied successfully.`n"
-
-Stop-Transcript
