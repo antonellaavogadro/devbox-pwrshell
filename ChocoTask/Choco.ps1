@@ -108,7 +108,7 @@ function Execute
     # capture the exit code from the process
     $processExitCode = $LASTEXITCODE
 
-    $process = Start-Process powershell.exe -ArgumentList "-File $File"
+    $process = Start-Process powershell.exe -ArgumentList "-File $File -NoProfile -NonInteractive -NoLogo"
     $expError = $process.ExitCode.Exception
     
     # This check allows us to capture cases where the command we execute exits with an error code.
