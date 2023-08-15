@@ -11,7 +11,6 @@ setupTasks:
     inputs:
       package: "googlechrome"
       ignoreChecksums: true
-  - task: powershell
+  - task: choco
     inputs:
-      command: New-Item -ItemType File -Path "$env:USERPROFILE\Documents\example.txt" -Value "howdy"
-      
+      package: "notepadplusplus"
