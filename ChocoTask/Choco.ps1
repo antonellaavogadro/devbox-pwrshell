@@ -50,7 +50,7 @@ function Ensure-Chocolatey
         } finally {
             Remove-Item $installScriptPath
         }
-
+        
         if ($LastExitCode -eq 3010)
         {
             Write-Host 'The recent changes indicate a reboot is necessary. Please reboot at your earliest convenience.'
@@ -88,7 +88,7 @@ function Install-Package
     Write-Host "File path $packageScriptPath"
 
     Execute -File $packageScriptPath
-    #Remove-Item $packageScriptPath
+    Remove-Item $packageScriptPath
 }
 
 function Execute
@@ -103,14 +103,11 @@ function Execute
     # https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/avoid-using-invoke-expression?view=powershell-7.3
     # Note that this will run powershell.exe
     # even if the system has pwsh.exe.
-    powershell.exe -File $File
+    powershell.exe -File $File -NoProfile -NonInteractive -NoLogo
 
     # capture the exit code from the process
     $processExitCode = $LASTEXITCODE
 
-    $process = Start-Process powershell.exe -ArgumentList "-File $File -NoProfile -NonInteractive -NoLogo"
-    $expError = $process.ExitCode.Exception
-    
     # This check allows us to capture cases where the command we execute exits with an error code.
     # In that case, we do want to throw an exception with whatever is in stderr. Normally, when
     # Invoke-Expression throws, the error will come the normal way (i.e. $Error) and pass via the
