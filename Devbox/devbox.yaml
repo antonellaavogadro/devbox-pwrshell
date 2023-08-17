@@ -14,3 +14,6 @@ setupTasks:
   - task: choco
     inputs:
       package: "notepadplusplus"
+  - task: choco
+    inputs:
+      package: "python3"
