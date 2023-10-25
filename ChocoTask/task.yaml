@@ -28,6 +28,7 @@ documentation:
   notes: This task is used to install a Chocolatey package.
   examples:
     - task: choco
+      displayName: choco task    
       description: install OracleJDK 17.0.2
       inputs:
         package: oraclejdk
