@@ -4,7 +4,7 @@ param(
     [Parameter()]
     [string]$WorkingDirectory
  )
-Start-Transcript -Path C:\PerfLogs\mfastatus-result.log -Append
+
 # Check if workingDirectory is set and not empty and if so, change to it.
 if ($WorkingDirectory -and $WorkingDirectory -ne "") {
     # Check if the working directory exists.
@@ -24,7 +24,7 @@ if ($WorkingDirectory -and $WorkingDirectory -ne "") {
 # Note that this will run powershell.exe
 # even if the system has pwsh.exe.
 Write-Output "Running command $Command"
-powershell.exe -Command $Command
+powershell.exe -Command {$Command}
 $CommandExitCode = $LASTEXITCODE
 Write-Output "Command exited with code $CommandExitCode"
 
