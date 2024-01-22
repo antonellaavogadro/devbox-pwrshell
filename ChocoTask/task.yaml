@@ -14,12 +14,12 @@ inputs:
       For example, "git".
       Visit https://chocolatey.org/packages to learn
       more about Chocolatey packages. 
-  version:
-    defaultValue: ""
+  parameters:
+    DefaultValue: ""
     type: string
     required: false
     description: The version of the Chocolatey package to install.
-  ignoreChecksums:
+  IgnoreChecksums:
     defaultValue: false
     type: boolean
     required: false
