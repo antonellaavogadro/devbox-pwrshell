@@ -19,7 +19,7 @@ inputs:
     type: string
     required: false
     description: The version of the Chocolatey package to install.
-  IgnoreChecksums:
+  ignoreChecksums:
     defaultValue: false
     type: boolean
     required: false
