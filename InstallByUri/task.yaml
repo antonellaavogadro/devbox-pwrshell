@@ -5,3 +5,11 @@ inputs:
     type: string
     defaultValue: ""    
     required: true
+  parameters:
+    type: string
+    defaultValue: ""    
+    required: true
+  url:
+    type: string
+    defaultValue: ""    
+    required: true
