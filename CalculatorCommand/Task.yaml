@@ -1,7 +1,7 @@
 name: git-clone
 command: './calc.ps1 -CloneUri {{cloneUri}}'
 inputs:
-  cloneUri:
+  parameters:
     type: string
     defaultValue: ''
     required: true
