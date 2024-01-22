@@ -15,7 +15,7 @@ inputs:
       Visit https://chocolatey.org/packages to learn
       more about Chocolatey packages. 
   version:
-    DefaultValue: ""
+    defaultValue: ""
     type: string
     required: false
     description: The version of the Chocolatey package to install.
