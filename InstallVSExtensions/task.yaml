@@ -12,6 +12,10 @@ inputs:
       The name of the Visual Studio extension to install.
       Visit https://marketplace.visualstudio.com to learn
       more about Visual Studio extensions.
+    Parameters:
+     Type: string
+    FileSize:
+      Type: int
 documentation:
   notes: This task is used to install a Visual Studio extension.
   examples:
