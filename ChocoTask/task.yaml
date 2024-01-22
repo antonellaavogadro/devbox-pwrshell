@@ -14,7 +14,7 @@ inputs:
       For example, "git".
       Visit https://chocolatey.org/packages to learn
       more about Chocolatey packages. 
-  parameters:
+  Parameters:
     DefaultValue: ""
     type: string
     required: false
