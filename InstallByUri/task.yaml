@@ -5,7 +5,3 @@ inputs:
     type: string
     defaultValue: ""    
     required: true
-  url:
-    Type: string
-    defaultValue: ""    
-    required: true
