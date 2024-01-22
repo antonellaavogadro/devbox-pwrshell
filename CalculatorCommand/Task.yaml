@@ -1,7 +1,7 @@
-name: calc
-command: "calc"
+name: git-clone
+command: './calc.ps1 -CloneUri {{cloneUri}}'
 inputs:
-  package:
-    type: "string"
-    defaultValue: ""
+  cloneUri:
+    type: string
+    defaultValue: ''
     required: true
